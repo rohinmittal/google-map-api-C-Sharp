@@ -3,6 +3,7 @@ using System.Net;
 using GeoCode;
 using RadarSearch;
 using PlaceDetail;
+using TimeZone;
 using System.Collections.Generic;
 
 namespace googleAPI {
@@ -23,7 +24,7 @@ namespace googleAPI {
 	}   
 
 	class Requests {    
-		public static string _apiKey = "<api_key>";
+		public static string _apiKey = "<key>";
 
 		// accepts an address and returns its geocoded lat,lng tuple
 		public static void geoCode(string address, out double lat, out double lng) {
@@ -49,5 +50,21 @@ namespace googleAPI {
 			placeDetail place = new placeDetail (response.result.place_id, response.result.name, response.result.formatted_address, response.result.formatted_phone_number, response.result.website);
 			return place;
 		}
+
+		public static DateTime getLocalTime(double lat, double lng) {
+			DateTime utcTime = DateTime.UtcNow;
+			try {
+				string timeZoneID = TimeZoneRequest.Request (lat, lng);
+				TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneID);
+				DateTime lTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, timeZoneInfo);
+				utcTime = lTime;
+			}   
+			catch (TimeZoneNotFoundException) {
+				Console.WriteLine ("Error");
+			}   
+
+			// if there is some exception, return utc time only. 
+			return utcTime;
+		}   
 	}
 }

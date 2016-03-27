@@ -9,7 +9,10 @@ namespace apiRequest {
 			for(int i = 0 ; i < results.Count; ++ i) {
 				placeDetail detail = Requests.findPlaceDetail (results[i].place_id);
 				Console.WriteLine (detail.name);
-			}   
+			}  
+
+			//DateTime time = Requests.getLocalTime (Convert.ToDouble(args[0]), Convert.ToDouble(args[1]));
+			//Console.WriteLine (time);
 		}   
 	}   
 }

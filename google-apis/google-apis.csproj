@@ -42,6 +42,7 @@
     <Compile Include="googleAPI\PlaceDetail\PlaceDetail.cs" />
     <Compile Include="googleAPI\GeoCode\GeoCode.cs" />
     <Compile Include="googleAPI\RadarSearch\RadarSearch.cs" />
+    <Compile Include="googleAPI\TimeZone\TimeZone.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -49,5 +50,6 @@
     <Folder Include="googleAPI\PlaceDetail\" />
     <Folder Include="googleAPI\GeoCode\" />
     <Folder Include="googleAPI\RadarSearch\" />
+    <Folder Include="googleAPI\TimeZone\" />
   </ItemGroup>
 </Project>
