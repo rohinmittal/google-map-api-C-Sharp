@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Net;
-using googleAPI;
 
-namespace GeoCode {
+namespace GoogleGeoCode {
 	public class AddressComponent {
 		public string long_name { get; set; }
 		public string short_name { get; set; }
@@ -37,23 +36,34 @@ namespace GeoCode {
 		public Bounds viewport { get; set; }
 	}   
 
-	public class RootObject {
+	public class GeoCodeObject {
 		public List<Result> results { get; set; }
 		public string status { get; set; }
 	}   
 
-	public class GeoCodeRequest {
-		static public RootObject Request (string address) {
+	public class GeoCode {
+		private string _apiKey = "";
+
+		public GeoCode(string key) {
+			_apiKey = key;
+		}
+
+		private GeoCodeObject Request (string address) {
 			string url = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
 				Uri.EscapeUriString (address) +
-				"&key=" + googleAPI.Requests._apiKey;;
+				"&key=" + _apiKey;
 			url = url.Replace (" ", "+");
 
 			WebClient client = new WebClient();
 			var response = client.DownloadString (url);
 
-			RootObject result = JsonConvert.DeserializeObject<RootObject> (response.ToString());
+			GeoCodeObject result = JsonConvert.DeserializeObject<GeoCodeObject> (response.ToString());
 			return result;
 		}
+
+		public Location GeoCodeAddress(string address) {
+			GeoCodeObject response = Request(address);
+			return response.results [0].geometry.location;
+		}   
 	}
 }

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Net;
-using googleAPI;
 
-namespace RadarSearch {
+namespace GoogleRadarSearch {
 
 	public class Result {
 		public Geometry geometry { get; set; }
@@ -22,30 +21,37 @@ namespace RadarSearch {
 		public double lng { get; set; }
 	}   
 
-	public class RootObject {
+	public class RadarSearchObject {
 		public List<Result> results { get; set; }
 		public List<Result> html_attributions { get; set; }
 		public string status { get; set; }
 	}   
 
-	public class RadarSearchRequest {
+	public class RadarSearch {
+		private string _apiKey = "";
 
-		static public RootObject Request (double lat, double lng, int radius, string placeType) {
+		public RadarSearch(string key) {
+			_apiKey = key;
+		}
+
+		private RadarSearchObject Request (double lat, double lng, int radius, string placeType) {
 			string url = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=" +
 			             lat.ToString () + "," +
 			             lng.ToString () +
 			             "&radius=" + radius.ToString () +
 			             "&keyword=indian&type=" +
-			             placeType + "&key=" +
-			             googleAPI.Requests._apiKey;
+			             placeType + "&key=" + _apiKey;
 			
 			WebClient client = new WebClient();
 			var response = client.DownloadString (url);
 
-			RootObject result = JsonConvert.DeserializeObject<RootObject> (response.ToString());
-
-			// returns the placeId object
+			RadarSearchObject result = JsonConvert.DeserializeObject<RadarSearchObject> (response.ToString());
 			return result;
 		}
+
+		public List<Result> PlaceIDs(double lat, double lng, int radius, string placeType) {
+			RadarSearchObject response = Request(lat, lng, radius, placeType);
+			return response.results;
+		}  
 	}
 }

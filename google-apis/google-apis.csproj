@@ -37,19 +37,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="apiRequest.cs" />
-    <Compile Include="googleAPI\googleAPI.cs" />
-    <Compile Include="googleAPI\PlaceDetail\PlaceDetail.cs" />
-    <Compile Include="googleAPI\GeoCode\GeoCode.cs" />
-    <Compile Include="googleAPI\RadarSearch\RadarSearch.cs" />
-    <Compile Include="googleAPI\TimeZone\TimeZone.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="googleAPI\GoogleDistanceMatrix.cs" />
+    <Compile Include="googleAPI\GoogleRadarSearch.cs" />
+    <Compile Include="googleAPI\GoogleTimeZone.cs" />
+    <Compile Include="googleAPI\GooglePlaceDetail.cs" />
+    <Compile Include="googleAPI\GoogleGeoCode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="googleAPI\" />
-    <Folder Include="googleAPI\PlaceDetail\" />
-    <Folder Include="googleAPI\GeoCode\" />
-    <Folder Include="googleAPI\RadarSearch\" />
-    <Folder Include="googleAPI\TimeZone\" />
   </ItemGroup>
 </Project>

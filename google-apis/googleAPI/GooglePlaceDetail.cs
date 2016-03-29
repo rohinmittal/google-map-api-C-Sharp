@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Net;
-using googleAPI;
 
-namespace PlaceDetail
+namespace GooglePlaceDetail
 {
 	public class AddressComponent {
 		public string long_name { get; set; }
@@ -95,24 +94,33 @@ namespace PlaceDetail
 		public double lng { get; set; }
 	}
 
-	public class RootObject {
+	public class PlaceDetailObject {
 		public Result result { get; set; }
 		public List<String> html_attributions { get; set; }
 		public string status { get; set; }
 	}
 
-	public class PlaceDetailRequest {
+	public class PlaceDetail {
+		private string _apiKey = "";
 
-		static public RootObject Request (string placeID) {
+		public PlaceDetail(string key) {
+			_apiKey = key;
+		}
+			
+		private PlaceDetailObject Request (string placeID) {
 			string url = "https://maps.googleapis.com/maps/api/place/details/json?" +
 				"placeid=" + placeID +
-				"&key=" + googleAPI.Requests._apiKey;
+				"&key=" + _apiKey;
 			WebClient client = new WebClient();
 			var response = client.DownloadString (url);
 
-			RootObject result = JsonConvert.DeserializeObject<RootObject> (response.ToString());
-
+			PlaceDetailObject result = JsonConvert.DeserializeObject<PlaceDetailObject> (response.ToString());
 			return result;
+		}
+
+		public Result PlaceInfo(string placeID) {
+			PlaceDetailObject info = Request (placeID);
+			return info.result;
 		}
 	}
 }
